@@ -53,6 +53,23 @@ curl -sL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 
 sudo apt-get update -y
 sudo apt-get install -y azure-cli;
 
+# Install Docker
+echo "🐋 Installing Docker"
+sudo apt update
+sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+
 # Install & Configure Zsh
 if [ "$INSTALL_ZSH" = "true" ]
 then
@@ -61,7 +78,7 @@ then
     zsh
 
     cp -f ~/dotfiles/.zshrc ~/.zshrc
-    chsh -s /usr/bin/zsh $USERNAME
+    sudo chsh -s /usr/bin/zsh $USERNAME
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
@@ -73,3 +90,5 @@ sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt-get autoremove -y
 sudo rm -rf /var/lib/apt/lists/*
+
+# Symlink overwrite current zshrc
