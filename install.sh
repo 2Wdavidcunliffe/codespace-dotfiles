@@ -45,11 +45,15 @@ popd
 # Install GCloud CLI
 # sudo apt-get update
 # sudo apt-get install -y apt-transport-https ca-certificates gnupg curl sudo
+# sudo apt -y --fix-broken install
 echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin kubectl google-cloud-sdk-kubectl-oidc kubectl
-# sudo apt -y --fix-broken install
+sudo apt-get install -y \
+ google-cloud-cli \
+ google-cloud-sdk-gke-gcloud-auth-plugin \
+ google-cloud-sdk-kubectl-oidc \
+ kubectl
 
 # Install Azure CLI
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/azure-cli.list
@@ -72,7 +76,10 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io
+sudo apt install -y \
+  docker-ce \
+  docker-ce-cli \
+  containerd.io
 
 # Install & Configure Zsh
 if [ "$INSTALL_ZSH" = "true" ]
