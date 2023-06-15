@@ -24,7 +24,10 @@ sudo apt-get install -y \
   lsb-release \
   apt-transport-https \
   ca-certificates \
-  gnupg
+  gnupg \
+  gnupg-agent \
+  software-properties-common \
+  htop
 
 # Install TFENV and configure for latest release of Terraform
 git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
@@ -40,28 +43,29 @@ sudo ./aws/install
 popd
 
 # Install GCloud CLI
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates gnupg curl sudo
+# sudo apt-get update
+# sudo apt-get install -y apt-transport-https ca-certificates gnupg curl sudo
 echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin kubectl google-cloud-sdk-kubectl-oidc
+sudo apt-get update
+sudo apt-get install google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin kubectl google-cloud-sdk-kubectl-oidc kubectl
 # sudo apt -y --fix-broken install
 
 # Install Azure CLI
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/azure-cli.list
 curl -sL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 2>/dev/null
-sudo apt-get update -y
+sudo apt-get update
 sudo apt-get install -y azure-cli;
 
 # Install Docker
 echo "🐋 Installing Docker"
-sudo apt update
-sudo apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
+# sudo apt update
+# sudo apt-get install -y \
+#     apt-transport-https \
+#     ca-certificates \
+#     curl \
+#     gnupg-agent \
+#     software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
