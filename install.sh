@@ -5,10 +5,10 @@ export USERNAME=`whoami`
 ## update and install required packages
 # Update Ubuntu and get standard repository programs
 sudo apt update 
-sudo apt full-upgrade -yq
+sudo apt full-upgrade -y
 sudo apt-get update
-sudo apt-get -yq install --no-install-recommends apt-utils dialog 2>&1
-sudo apt-get install -yq \
+sudo apt-get -y install --no-install-recommends apt-utils dialog 2>&1
+sudo apt-get install -y \
   curl \
   git \
   gnupg2 \
@@ -49,7 +49,7 @@ popd
 echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install -yq \
+sudo apt-get install -y \
  google-cloud-cli \
  google-cloud-sdk-gke-gcloud-auth-plugin \
  google-cloud-sdk-kubectl-oidc \
@@ -59,7 +59,7 @@ sudo apt-get install -yq \
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/azure-cli.list
 curl -sL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 2>/dev/null
 sudo apt-get update
-sudo apt-get install -yq azure-cli;
+sudo apt-get install -y azure-cli;
 
 # Install Docker
 echo "🐋 Installing Docker"
@@ -76,7 +76,7 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 sudo apt update
-sudo apt install -yq \
+sudo apt install -y \
   docker-ce \
   docker-ce-cli \
   containerd.io
@@ -89,13 +89,13 @@ curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sud
 sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
 sudo apt update
-sudo apt install -yq \
+sudo apt install -y \
   1password
 
 # Install & Configure Zsh
 if [ "$INSTALL_ZSH" = "true" ]
 then
-    sudo apt-get install -yq \
+    sudo apt-get install -y \
     fonts-powerline \
     zsh
 
@@ -112,7 +112,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -yq
 source "$HOME/.cargo/env"
 
 # Cleanup
-sudo apt upgrade -yq
-sudo apt autoremove -yq
-sudo apt-get autoremove -yq
+sudo apt upgrade -y
+sudo apt autoremove -y
+sudo apt-get autoremove -y
 sudo rm -rf /var/lib/apt/lists/*
