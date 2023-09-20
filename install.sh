@@ -2,6 +2,8 @@ export DEBIAN_FRONTEND=noninteractive
 export INSTALL_ZSH=true
 export USERNAME=`whoami`
 
+sudo update-locale LANG=en_US.utf8
+
 ## update and install required packages
 # Update Ubuntu and get standard repository programs
 sudo apt update 
