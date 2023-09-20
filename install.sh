@@ -5,7 +5,7 @@ export USERNAME=`whoami`
 ## update and install required packages
 # Update Ubuntu and get standard repository programs
 sudo apt update 
-sudo apt full-upgrade -y
+# sudo apt full-upgrade -y
 sudo apt-get update
 sudo apt-get -y install --no-install-recommends apt-utils dialog 2>&1
 sudo apt-get install -y \
