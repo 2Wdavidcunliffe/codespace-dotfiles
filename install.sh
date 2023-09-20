@@ -2,12 +2,10 @@ export DEBIAN_FRONTEND=noninteractive
 export INSTALL_ZSH=true
 export USERNAME=`whoami`
 
-sudo update-locale LANG=en_US.utf8
-
 ## update and install required packages
 # Update Ubuntu and get standard repository programs
 sudo apt update 
-# sudo apt full-upgrade -y
+sudo apt full-upgrade -y
 sudo apt-get update
 sudo apt-get -y install --no-install-recommends apt-utils dialog 2>&1
 sudo apt-get install -y \
@@ -46,8 +44,8 @@ popd
 
 # Install GCloud CLI
 # sudo apt-get update
-# sudo apt-get install -yq apt-transport-https ca-certificates gnupg curl sudo
-# sudo apt -yq --fix-broken install
+# sudo apt-get install -y apt-transport-https ca-certificates gnupg curl sudo
+# sudo apt -y --fix-broken install
 echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update
@@ -66,7 +64,7 @@ sudo apt-get install -y azure-cli;
 # Install Docker
 echo "🐋 Installing Docker"
 # sudo apt update
-# sudo apt-get install -yq \
+# sudo apt-get install -y \
 #     apt-transport-https \
 #     ca-certificates \
 #     curl \
@@ -82,17 +80,6 @@ sudo apt install -y \
   docker-ce \
   docker-ce-cli \
   containerd.io
-
-# Install 1Password CLI
-curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
-sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
-curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
-curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-sudo apt update
-sudo apt install -y \
-  1password
 
 # Install & Configure Zsh
 if [ "$INSTALL_ZSH" = "true" ]
@@ -110,7 +97,7 @@ then
 fi
 
 # Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -yq
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # Cleanup
@@ -118,3 +105,5 @@ sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt-get autoremove -y
 sudo rm -rf /var/lib/apt/lists/*
+
+# Symlink overwrite current zshrc
