@@ -5,10 +5,10 @@ export USERNAME=`whoami`
 ## update and install required packages
 # Update Ubuntu and get standard repository programs
 sudo apt update 
-sudo apt full-upgrade -y
+sudo apt full-upgrade -yq
 sudo apt-get update
-sudo apt-get -y install --no-install-recommends apt-utils dialog 2>&1
-sudo apt-get install -y \
+sudo apt-get -yq install --no-install-recommends apt-utils dialog 2>&1
+sudo apt-get install -yq \
   curl \
   git \
   gnupg2 \
@@ -44,12 +44,12 @@ popd
 
 # Install GCloud CLI
 # sudo apt-get update
-# sudo apt-get install -y apt-transport-https ca-certificates gnupg curl sudo
-# sudo apt -y --fix-broken install
+# sudo apt-get install -yq apt-transport-https ca-certificates gnupg curl sudo
+# sudo apt -yq --fix-broken install
 echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install -y \
+sudo apt-get install -yq \
  google-cloud-cli \
  google-cloud-sdk-gke-gcloud-auth-plugin \
  google-cloud-sdk-kubectl-oidc \
@@ -59,12 +59,12 @@ sudo apt-get install -y \
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/azure-cli.list
 curl -sL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 2>/dev/null
 sudo apt-get update
-sudo apt-get install -y azure-cli;
+sudo apt-get install -yq azure-cli;
 
 # Install Docker
 echo "🐋 Installing Docker"
 # sudo apt update
-# sudo apt-get install -y \
+# sudo apt-get install -yq \
 #     apt-transport-https \
 #     ca-certificates \
 #     curl \
@@ -76,15 +76,26 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 sudo apt update
-sudo apt install -y \
+sudo apt install -yq \
   docker-ce \
   docker-ce-cli \
   containerd.io
 
+# Install 1Password CLI
+curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
+sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+sudo apt update
+sudo apt install -yq \
+  1password
+
 # Install & Configure Zsh
 if [ "$INSTALL_ZSH" = "true" ]
 then
-    sudo apt-get install -y \
+    sudo apt-get install -yq \
     fonts-powerline \
     zsh
 
@@ -97,13 +108,11 @@ then
 fi
 
 # Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -yq
 source "$HOME/.cargo/env"
 
 # Cleanup
-sudo apt upgrade -y
-sudo apt autoremove -y
-sudo apt-get autoremove -y
+sudo apt upgrade -yq
+sudo apt autoremove -yq
+sudo apt-get autoremove -yq
 sudo rm -rf /var/lib/apt/lists/*
-
-# Symlink overwrite current zshrc
