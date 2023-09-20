@@ -2,6 +2,20 @@ export DEBIAN_FRONTEND=noninteractive
 export INSTALL_ZSH=true
 export USERNAME=`whoami`
 
+initArch() {
+  ARCH=$(uname -m)
+  case $ARCH in
+    armv5*) ARCH="armv5";;
+    armv6*) ARCH="armv6";;
+    armv7*) ARCH="arm";;
+    aarch64) ARCH="arm64";;
+    x86) ARCH="386";;
+    x86_64) ARCH="amd64";;
+    i686) ARCH="386";;
+    i386) ARCH="386";;
+  esac
+}
+
 ## update and install required packages
 # Update Ubuntu and get standard repository programs
 sudo apt update 
@@ -37,7 +51,7 @@ tfenv use latest
 
 # Install AWS CLI
 pushd /tmp
-curl "https://awscli.amazonaws.com/awscli-exe-linux-$(lscpu | grep Architecture | cut -d ":" -f 2 | xargs).zip" -o "awscliv2.zip"
+curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 popd
@@ -95,6 +109,16 @@ then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
     echo "source $PWD/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 fi
+
+# Install OnePassword CLI
+initArch && \
+wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.20.0/op_linux_${ARCH}_v2.20.0.zip" -O op.zip && \
+unzip -d op op.zip && \
+sudo mv op/op /usr/local/bin && \
+rm -r op.zip op && \
+sudo groupadd -f onepassword-cli && \
+sudo chgrp onepassword-cli /usr/local/bin/op && \
+sudo chmod g+s /usr/local/bin/op
 
 # Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
